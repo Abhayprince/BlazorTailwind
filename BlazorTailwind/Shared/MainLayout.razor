@@ -1,0 +1,34 @@
+﻿@using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+@inherits LayoutComponentBase
+@inject IWebAssemblyHostEnvironment HostEnvironment
+@inject IJSRuntime JsRuntime
+
+@if (!HostEnvironment.IsDevelopment())
+{
+    <link href="/css/tailwind.css" rel="stylesheet" />
+}
+
+<div class="page">
+    <div class="sidebar">
+        <NavMenu />
+    </div>
+
+    <main>
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && HostEnvironment.IsDevelopment())
+        {
+            await JsRuntime.InvokeVoidAsync("window.loadTailwindCdnJs");
+        }
+    }
+}
